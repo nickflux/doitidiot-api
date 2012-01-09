@@ -1,0 +1,1 @@
+Geocoder::Configuration.api_key = "ABQIAAAA5kitfwSNbSyQ2kht6TA71hT0Tx6r0RJzxmx4dRicqh07Eg4Q3xTHoi_zjUlXcBPZIM8ZI53irmP86A"

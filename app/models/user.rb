@@ -1,6 +1,6 @@
 class User
   include Mongoid::Document
-  #include Geocoder::Model::Mongoid  
+  include Geocoder::Model::Mongoid  
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -10,13 +10,13 @@ class User
   field :coordinates,   :type => Array
   field :address,       :type => String
 
-  #references_many :todos, :dependent => :destroy
+  has_many :todos, :dependent => :destroy
 
   before_create :generate_disposable_email_suffix
-  #geocoded_by :last_sign_in_ip
-  #reverse_geocoded_by :coordinates
+  geocoded_by :last_sign_in_ip
+  reverse_geocoded_by :coordinates
 
-  #after_validation :geocode
+  after_validation :geocode
 
   ###
   # INSTANCE METHODS
