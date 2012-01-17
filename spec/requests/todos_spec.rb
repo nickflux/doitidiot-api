@@ -63,7 +63,23 @@ describe "Todos" do
   
   end
   
-  describe "Create, Update", :focus do
+  describe "Creating a new todo", :focus do
+    
+    before(:each) do
+      request_login(request_user)
+    end
+        
+    it "should create a new to and show it in the todo list", :js do
+      page.should_not have_css('#todos li')
+      fill_in "todo_what_to_do", :with => "I should do this"
+      click_on "Create Todo"
+      page.should have_css('#todos li', :count => 1)
+      page.should have_content("I should do this")
+    end
+    
+  end
+  
+  describe "Create, Update, Delete" do
   
     before(:each) do
       post_login(request_user)
@@ -81,7 +97,6 @@ describe "Todos" do
       lambda do
         post "/todos.json", :todo => {:what_to_do => ""}
       end.should_not change{request_user.todos.count}.by(1)
-      d{response.status}
       response.status.should_not == 200
     end
     
@@ -100,6 +115,21 @@ describe "Todos" do
         post "/todos/#{todo.id}.json", :_method => "put", :todo => {:what_to_do => ""}
       end.should_not change{request_user.todos.count}.by(1)
       response.status.should_not == 200
+    end
+    
+    it "DELETE /todos deletes a todo and returns success" do
+      todo  = FactoryGirl.create(:todo, :what_to_do => "First Thing", :user => request_user)
+      lambda do
+        post "/todos/#{todo.id}.json", :_method => "delete"
+      end.should change{request_user.todos.count}.by(-1)
+      response.status.should == 200
+    end
+    
+    it "DELETE /todos fails to delete a todo and returns failure status" do
+      other_todo  = FactoryGirl.create(:todo, :what_to_do => "Another Thing", :user => FactoryGirl.create(:user))
+      lambda do
+        post "/todos/#{other_todo.id}.json", :_method => "delete"
+      end.should raise_exception
     end
     
   end

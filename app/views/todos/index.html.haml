@@ -8,11 +8,11 @@
 - if user_signed_in?
   = form_for @new_todo do |f|
     = f.text_field :what_to_do
-    = f.submit
+    = f.submit 'Create Todo', :data => {:url => todos_path}
     
 %ul#todos
   - @todos.each do |todo|
     = render 'todo_li', :mustache => todo.as_json
 
-%script{:type => "text/javascript", :id  => "research_folder_item"}
+%script{:type => "text/javascript", :id  => "todo_template"}
   = render 'todo_li'

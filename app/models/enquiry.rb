@@ -9,4 +9,11 @@ class Enquiry
   validates_presence_of :email, :message
   validates_format_of :email, :with => /^.+@.+\..+$/
 
+  after_create :send_email
+
+  def send_email
+    EnquiryMailer.general_enquiry(self).deliver
+  end
+  
+  
 end
