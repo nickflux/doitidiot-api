@@ -1,3 +1,7 @@
-<li>
-  {{what_to_do}}
-</li>
+<span class="handle {{#complete}}hide{{/complete}}">[drag]</span>
+{{what_to_do}}
+<div class="todo_actions {{#complete}}hide{{/complete}}">
+  <button data-url="/todos/{{_id}}" class="complete_todo" id="complete_todo_{{_id}}">complete</button>
+  <button data-url="/todos/{{_id}}/edit" class="edit_todo" id="edit_todo_{{_id}}">edit</button>
+  <button data-url="/todos/{{_id}}" class="destroy_todo" id="destroy_todo_{{_id}}">delete</button>
+</div>

@@ -1,5 +1,6 @@
 %h1 Welcome to Do It Idiot
 - if user_signed_in?
+  = link_to('completed todos', completed_todos_path)
   = link_to('log out', destroy_user_session_path, :method => "delete")
 - else
   = link_to('log in', new_user_session_path)
@@ -10,9 +11,12 @@
     = f.text_field :what_to_do
     = f.submit 'Create Todo', :data => {:url => todos_path}
     
-%ul#todos
+%ul#todos.list_todos{:"data-sort-url" => sort_todos_url}
   - @todos.each do |todo|
-    = render 'todo_li', :mustache => todo.as_json
+    %li{:id => "todo_#{todo.id}"}
+      = render 'todo_li', :mustache => todo.as_json
 
 %script{:type => "text/javascript", :id  => "todo_template"}
   = render 'todo_li'
+%script{:type => "text/javascript", :id  => "edit_todo_template"}
+  = render 'edit_todo_li'

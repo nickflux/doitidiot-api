@@ -16,6 +16,16 @@ class TodosController < InheritedResources::Base
     end
   end
   
+  def sort
+    params[:todo].each_with_index do |id, index|
+      Todo.find(id).update_attributes(ordinal: index+1)
+    end
+    render nothing: true
+  end
+  
+  def completed
+    
+  end
   
   protected
     def begin_of_association_chain
@@ -23,7 +33,7 @@ class TodosController < InheritedResources::Base
     end
     
     def collection
-      @todos ||= end_of_association_chain.alive
+      @todos ||= end_of_association_chain.alive.order_by(:ordinal.asc)
     end
   
     def get_new_todo

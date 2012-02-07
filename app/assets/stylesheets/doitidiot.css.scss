@@ -1,0 +1,12 @@
+.hide {
+  display: none;
+}
+.list_todos {
+  width: 400px;
+  li {
+    clear: right;
+    .todo_actions {
+      float: right;
+    }
+  }
+}

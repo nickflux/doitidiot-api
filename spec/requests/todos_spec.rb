@@ -63,7 +63,7 @@ describe "Todos" do
   
   end
   
-  describe "Creating a new todo", :focus do
+  describe "Creating a new todo" do
     
     before(:each) do
       request_login(request_user)
@@ -75,6 +75,41 @@ describe "Todos" do
       click_on "Create Todo"
       page.should have_css('#todos li', :count => 1)
       page.should have_content("I should do this")
+    end
+    
+  end
+  
+  describe "Updating todo" do
+    
+    before(:each) do
+      @todo  = FactoryGirl.create(:todo, :what_to_do => "Update this thing", :user => request_user)
+      request_login(request_user)
+    end
+        
+    it "should create a new to and show it in the todo list", :js do
+      page.should have_css('#todos li')
+      page.should have_content("Update this thing")
+      click_on "edit_todo_#{@todo.id}"
+      fill_in "what_to_do_#{@todo.id}", :with => "This thing is updated"
+      click_on "update"
+      page.should have_css('#todos li', :count => 1)
+      page.should have_content("This thing is updated")
+    end
+    
+  end
+  
+  describe "Deleting todo" do
+    
+    before(:each) do
+      @todo  = FactoryGirl.create(:todo, :what_to_do => "Destroy this thing", :user => request_user)
+      request_login(request_user)
+    end
+        
+    it "should create a new to and show it in the todo list", :js do
+      page.should have_css('#todos li')
+      page.should have_content("Destroy this thing")
+      click_on "destroy_todo_#{@todo.id}"
+      page.should_not have_css('#todos li')
     end
     
   end

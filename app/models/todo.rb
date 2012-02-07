@@ -10,7 +10,7 @@ class Todo
   field :complete,    :type => Boolean, :default => false
   field :deleted,     :type => Boolean, :default => false
 
-  attr_accessible :what_to_do, :anger_level, :ordinal
+  attr_accessible :what_to_do, :anger_level, :ordinal, :complete
 
   validates_presence_of :what_to_do
   validates_length_of :what_to_do, :within => 1..100, :message => 'is too long'
@@ -22,7 +22,7 @@ class Todo
 
   # formatter for JSON output
   def for_mustache
-    {"anger_level" => anger_level, "complete" => complete, "deleted" => deleted, "ordinal" => ordinal, "updated_at" => updated_at.strftime("%Y-%m-%d %H:%M:%S"), "what_to_do" => what_to_do}
+    {"anger_level" => anger_level, "complete" => complete, "deleted" => deleted, "ordinal" => ordinal, "updated_at" => updated_at.strftime("%Y-%m-%d %H:%M:%S"), "what_to_do" => what_to_do, "id" => id.to_s}
   end
 
   protected

@@ -1,0 +1,8 @@
+%h1 Welcome to Do It Idiot
+%h2 Completed ToDos
+= link_to('todos', todos_path)
+    
+%ul#completed_todos.list_todos
+  - current_user.todos.completed.each do |todo|
+    %li
+      = render 'todo_li', :mustache => todo.as_json

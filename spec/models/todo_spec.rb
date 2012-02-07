@@ -43,7 +43,7 @@ describe Todo do
     
   end
   
-  describe "for_mustache", :focus do
+  describe "for_mustache" do
       
     let(:user) { FactoryGirl.create(:user) }
     
