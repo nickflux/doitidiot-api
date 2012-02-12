@@ -1,7 +1,11 @@
 DoitidiotApi::Application.routes.draw do
   offline = Rack::Offline.configure do
+    #Dir[Rails.root.join("app/assets/stylesheets/*.*")].each do |file|
+    #  cache "assets/" +  File.basename(file).split(".")[0] + ".css"
+    #end
     cache "assets/application.css"
     cache "assets/application.js"
+    
     network "/"
   end
   match "/application.manifest" => offline

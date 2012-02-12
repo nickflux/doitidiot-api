@@ -16,8 +16,6 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-ENV["RAILS_ASSET_ID"] = ""
-
 module DoitidiotApi
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
