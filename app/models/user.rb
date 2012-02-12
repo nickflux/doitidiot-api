@@ -2,6 +2,8 @@ class User
   include Mongoid::Document
   include Geocoder::Model::Mongoid  
   
+  TIMES_TO_SEND = {"morning" => 6, "noon" => 12, "night" => 20}.freeze
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,  :recoverable, :rememberable, :trackable, :validatable, :confirmable, :trackable
@@ -9,6 +11,8 @@ class User
   field :email_suffix,  :type => String
   field :coordinates,   :type => Array
   field :address,       :type => String
+  field :time_zone,     :type => String
+  field :time_to_send,  :type => String
 
   has_many :todos, :dependent => :destroy
 

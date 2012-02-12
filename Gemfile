@@ -1,10 +1,12 @@
 source 'http://rubygems.org'
 
+gem 'thin'
 gem 'rails', '3.1.3'
 gem 'mongoid', '~> 2.3'
 gem 'bson_ext', '~> 1.4'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'yajl-ruby' # for parsing JSON files
+gem 'rack-offline' # for offline mobile app
 
 gem 'devise' # authentication etc
 gem 'RedCloth' # Textile
@@ -29,7 +31,8 @@ end
 gem 'jquery-rails'
 
 group :test, :development do
-  gem 'rspec-rails'
+  gem 'rspec-core', :git => "git://github.com/rspec/rspec-core.git"
+  gem 'rspec-rails', '2.8.1'
   gem 'email_spec'
   gem 'rspec-rails-mocha', '~> 0.3.1', :require => false
   gem 'factory_girl_rails'

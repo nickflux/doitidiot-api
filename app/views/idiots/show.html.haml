@@ -1,0 +1,5 @@
+= form_for @idiot, :as => :idiot, :url => idiot_path, :method => :put do |f|
+  %p email: #{@idiot.email}
+  %p time zone: #{f.time_zone_select :time_zone, ActiveSupport::TimeZone.all}
+  %p send reminder at: #{f.select :time_to_send, User::TIMES_TO_SEND.keys}
+  %p #{f.submit}

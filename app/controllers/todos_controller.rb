@@ -1,12 +1,10 @@
 class TodosController < InheritedResources::Base
   respond_to :html, :json
   
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!
   before_filter :get_new_todo
   
   def index
-    @todos  = [] unless user_signed_in?
-    index!
   end
   
   def create

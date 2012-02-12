@@ -7,5 +7,13 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require jquery.offline
+//= require json 
 //= require mustache
 //= require_tree .
+
+jQuery(function () {
+  $(window.applicationCache).error(function () {
+    alert('There was an error when loading the cache manifest.');
+  })
+})

@@ -1,5 +1,1 @@
-<%- if user_logged_in? -%>
-  <%= raw({msg: "Welcome to Do It Idiot", todos: "these are the todos"}.to_json) %>
-<%- else -%>
-  <%= raw({msg: "Welcome to Do It Idiot"}.to_json) %>
-<%- end -%>
+<%= raw(current_user.todos.alive.order_by(:ordinal.asc).to_json) %>
