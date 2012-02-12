@@ -1,15 +1,16 @@
 DoitidiotApi::Application.routes.draw do
   offline = Rack::Offline.configure do
-    Dir[Rails.root.join("app/assets/stylesheets/*.*")].each do |file|
-      cache "assets/" +  File.basename(file).split(".")[0] + ".css"
-    end
-    cache "assets/jquery.js"
-    cache "assets/jquery-ui.js"
-    cache "assets/jquery_ujs.js"
-    cache "assets/jquery.offline.js"
-    cache "assets/json.js"
-    cache "assets/mustache.js"
-    cache "assets/todos.js"
+    #Dir[Rails.root.join("app/assets/stylesheets/*.*")].each do |file|
+    #  cache "assets/" +  File.basename(file).split(".")[0] + ".css"
+    #end
+    #cache "assets/jquery.js"
+    #cache "assets/jquery-ui.js"
+    #cache "assets/jquery_ujs.js"
+    #cache "assets/jquery.offline.js"
+    #cache "assets/json.js"
+    #cache "assets/mustache.js"
+    #cache "assets/todos.js"
+    cache "assets/application.css"
     cache "assets/application.js"
     
     network "/"
