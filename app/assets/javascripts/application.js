@@ -14,6 +14,6 @@
 
 jQuery(function () {
   $(window.applicationCache).error(function () {
-    alert('There was an error when loading the cache manifest.');
+    console.log('There was an error when loading the cache manifest.');
   })
 })
