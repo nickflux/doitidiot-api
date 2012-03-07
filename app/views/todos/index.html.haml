@@ -1,4 +1,8 @@
 %h1 Welcome to Do It Idiot
+%h2
+  You 
+  %span.diswadjs fucking
+  %span.diswnouns idiot
 - if user_signed_in?
   = link_to('completed todos', completed_todos_path)
   = link_to('log out', destroy_user_session_path, :method => "delete")

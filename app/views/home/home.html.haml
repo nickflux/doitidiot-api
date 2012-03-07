@@ -1,15 +1,13 @@
 %h1 Welcome to Do It Idiot
-- if user_signed_in?
-  = link_to('completed todos', completed_todos_path)
-  = link_to('log out', destroy_user_session_path, :method => "delete")
-- else
-  = link_to('log in', new_user_session_path)
-  = link_to('register', new_user_registration_path)
+%h2
+  ! You <span class="diswadjs">fucking</span> <span class="diswnouns">idiot</span>
 
 - if user_signed_in?
-  = form_for @new_todo do |f|
-    = f.text_field :what_to_do
-    = f.submit 'Create Todo', :data => {:url => todos_path}
+  .row-fluid
+    = form_for @new_todo, :html => {:class => "span12 form-inline"} do |f|
+      .row-fluid
+        .span9= f.text_field :what_to_do
+        .span3= f.submit 'Create Todo', :data => {:url => todos_path}, :class => "btn-primary"
     
 %ul#todos.list_todos{:"data-sort-url" => sort_todos_url}
 

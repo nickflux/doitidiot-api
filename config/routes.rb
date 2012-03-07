@@ -10,6 +10,7 @@ DoitidiotApi::Application.routes.draw do
   devise_for :users
   
   resource  :idiot, :only => [:show, :edit, :update]
+  resources :redacts, :only => [:index]
   
   resources :todos do
     collection do

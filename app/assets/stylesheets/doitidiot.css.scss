@@ -1,15 +1,18 @@
-body {
-  background-color: silver;
+input {
+  width: 100%;
 }
 .hide {
   display: none;
 }
+form {
+  margin: 0;
+  padding: 0;
+}
 .list_todos {
-  width: 400px;
+  margin: 0;
   li {
     clear: right;
-    .todo_actions {
-      float: right;
-    }
+    list-style: none;
+    margin: 5px;
   }
 }

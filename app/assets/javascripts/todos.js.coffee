@@ -2,11 +2,10 @@ jQuery ->
   if $('#new_todo').length
     new Todo()
   
-      
-  
     
 class Todo
   constructor: ->
+    @getExistingTodos()
     @getPendingTodos()
     @index()
     $('#new_todo input[type=submit]').click(@create)
@@ -14,11 +13,17 @@ class Todo
     $('#todos').on("click", '.destroy_todo', @destroy)
     $('#todos').on("click", '.complete_todo', @complete)
     $('#todos').on("click", '.update_todo', @update)
-    #if localStorage["pendingTodos"]
-      #@sendPending()
+    # send all the new and updated Todos
+    if localStorage["pendingTodos"]
+      @sendPending()
+    if localStorage["existingTodos"]
+      @sendExisting()
   
   getTodoId: (element) =>
     element.closest('li').attr('id').replace(/todo_/, "")
+    
+  getWhatToDo: (element) =>
+    element.closest('li').data("what-to-do")
     
   isLocal: (todo_id) =>
     if (todo_id.match("ls-"))
@@ -26,12 +31,47 @@ class Todo
     else
       false
       
-  getLocalTodo: (todo_id) =>
+  getExistingTodo: (todo_id) =>
+    todos = $.grep @existingTodos, (to, i) -> 
+      to._id == todo_id
+    return todos[0]
+    
+  getExistingTodoIndex: (todo) =>
+    index = $.inArray todo, @existingTodos
+    return index
+  
+  getExistingTodos: =>
+    if !localStorage["existingTodos"]
+      localStorage["existingTodos"] = JSON.stringify([]);
+    @existingTodos = $.parseJSON localStorage["existingTodos"]
+    
+  addExistingTodo: (todo_id, todo) =>
+    todo._id = todo_id
+    @existingTodos.push(todo)
+    localStorage["existingTodos"] = JSON.stringify(@existingTodos)
+    return todo
+    
+  updateExistingTodos: (todo_id, todo_updates) =>
+    todo                          = @getExistingTodo(todo_id)
+    # if this todo does not exist in our local Existing Todos storage
+    # create it
+    if !todo
+      todo  = @addExistingTodo(todo_id, todo_updates)
+    else
+      # or update it
+      todo_index                    = @getExistingTodoIndex(todo)
+      for own key, value of todo_updates
+        todo[key] = value      
+      @existingTodos[todo_index]    = todo
+      localStorage["existingTodos"] = JSON.stringify(@existingTodos)
+    return todo
+      
+  getPendingTodo: (todo_id) =>
     todos = $.grep @pendingTodos, (to, i) -> 
       to._id == todo_id
     return todos[0]
     
-  getLocalTodoIndex: (todo) =>
+  getPendingTodoIndex: (todo) =>
     index = $.inArray todo, @pendingTodos
     return index
   
@@ -48,35 +88,52 @@ class Todo
     return todo
   
   updatePendingTodos: (todo_id, todo_updates) =>
-    todo                          = @getLocalTodo(todo_id)
-    todo_index                    = @getLocalTodoIndex(todo)
+    todo                          = @getPendingTodo(todo_id)
+    todo_index                    = @getPendingTodoIndex(todo)
     for own key, value of todo_updates
       todo[key] = value      
     @pendingTodos[todo_index]     = todo
-    console.log(@pendingTodos)
     localStorage["pendingTodos"]  = JSON.stringify(@pendingTodos)
     return todo
   
   todoInLi: (todo) =>
-    $('#todos').append('<li id="todo_'+todo._id+'">' + Mustache.to_html($('#todo_template').html(), todo) + '</li>')
+    $('#todos').append('<li id="todo_'+todo._id+'" class="row-fluid" data-what-to-do="'+todo.what_to_do+'">' + Mustache.to_html($('#todo_template').html(), todo) + '</li>')
   
   index: =>
     self  = this
     $.retrieveJSON "/todos.json", (todos, status, data) ->
       $('#todos').empty()
+      # go through todos and merge with existing offline todo updates
+      $(todos).each (i, todo) ->
+        if self.getExistingTodo(todo._id)
+          todos[i]  = $.extend(todo, self.getExistingTodo(todo._id))
+      # now add new offline todos
       all_todos = $.grep todos.concat(self.pendingTodos), (todo, i) -> 
         !todo.complete && !todo.deleted
+      # sort the todos
+      all_todos.sort (a,b) ->
+        ((a.ordinal > b.ordinal) ? -1 : ((a.ordinal < b.ordinal) ? 1 : 0));
       $(all_todos).each (i, todo) ->
         self.todoInLi(todo)
+      # enable sorting
       self.sort()
+      # trigger applyBlacklists in Redacts
+      $('#todos').trigger("todos_loaded")
       
   sort: =>
+    self  = this
     $("#todos").sortable
       axis: 'y'
       handle: '.handle'
       update: ->
-        # update local todos first
-        $.post($(this).data('sort-url'), $(this).sortable('serialize'))
+        $('#todos li').each (i, todo_elm) ->
+          todo_id = self.getTodoId($(todo_elm).find('span:first-child'))
+          todo_updates  = 
+            ordinal: i + 1
+          if self.isLocal(todo_id)
+            self.updatePendingTodos(todo_id, todo_updates)
+          else
+            self.updateExistingTodos(todo_id, todo_updates)
     $("#todos").disableSelection()
   
   show: (todo) =>
@@ -89,63 +146,57 @@ class Todo
     @show(todo)
     false
   
-  edit: ->
-    # do locally
-    edit_todo_url  = $(this).data('url')
-    list_item      = $(this).closest('li')
-    $.ajax
-      type: 'GET',
-      url: edit_todo_url,
-      dataType: 'json',
-      success: (todo) ->
-        $(list_item).html(Mustache.to_html($('#edit_todo_template').html(), todo))
+  edit: (e) =>
+    todo_elm      = $(e.target)
+    list_item     = todo_elm.closest('li')
+    todo          =
+      what_to_do: @getWhatToDo(todo_elm),
+      _id: @getTodoId(todo_elm)
+    $(list_item).html(Mustache.to_html($('#edit_todo_template').html(), todo))
   
-  update: ->
-    # do locally
-    update_todo_url   = $(this).data('url')
-    list_item         = $(this).closest('li')
+  update: (e) =>
+    todo_elm          = $(e.target)
+    list_item         = todo_elm.closest('li')
+    todo_id           = @getTodoId(todo_elm)
     what_to_do_value  = list_item.find('input').val()
-    $.ajax
-      type: 'PUT',
-      url: update_todo_url,
-      data: { todo: {what_to_do: what_to_do_value}},
-      dataType: 'json',
-      success: ->
-        $.getJSON update_todo_url, (todo) ->
-          $(list_item).html(Mustache.to_html($('#todo_template').html(), todo))
+    todo              =
+      what_to_do: what_to_do_value,
+      _id: todo_id
+    todo_updates  = 
+        what_to_do: what_to_do_value
+    if @isLocal(todo_id)
+      @updatePendingTodos(todo_id, todo_updates)
+    else
+      @updateExistingTodos(todo_id, todo_updates)
+    $(list_item).html(Mustache.to_html($('#todo_template').html(), todo))
+    $(list_item).data("what-to-do", what_to_do_value)
+    false
           
-  destroy: =>
-    # do locally
-    destroy_todo_url  = $(this).data('url')
-    list_item         = $(this).closest('li')
-    $.ajax
-      type: 'DELETE',
-      url: destroy_todo_url,
-      dataType: 'json',
-      success: ->
-        $(list_item).remove()
+  destroy: (e) =>
+    todo_elm      = $(e.target)
+    todo_id       = @getTodoId(todo_elm)
+    list_item     = todo_elm.closest('li')
+    todo_updates  = 
+        deleted: true
+    if @isLocal(todo_id)
+      @updatePendingTodos(todo_id, todo_updates)
+    else
+      @updateExistingTodos(todo_id, todo_updates)
+    $(list_item).remove()
       
   complete: (e) =>
-    todo_elm  = $(e.target)
-    todo_id   = @getTodoId(todo_elm)
-    list_item = todo_elm.closest('li')
-    
-    if @isLocal(todo_id)
-      todo_updates  = 
+    todo_elm      = $(e.target)
+    todo_id       = @getTodoId(todo_elm)
+    list_item     = todo_elm.closest('li')
+    todo_updates  = 
         complete: true
+    if @isLocal(todo_id)
       @updatePendingTodos(todo_id, todo_updates)
-      $(list_item).remove()
     else
-      # TODO: what if we are offline?
-      update_todo_url   = todo_elm.data('url')
-      $.ajax
-        type: 'PUT',
-        url: update_todo_url,
-        data: { todo: {complete: true}},
-        dataType: 'json',
-        success: ->
-          $(list_item).remove()
-       
+      @updateExistingTodos(todo_id, todo_updates)
+    $(list_item).remove()
+    
+    
   sendPending: =>
     sendPendingMethod = @sendPending
     if (window.navigator.onLine)
@@ -162,6 +213,23 @@ class Todo
             pendingTodos.shift()
             localStorage["pendingTodos"] = JSON.stringify pendingTodos
             setTimeout(sendPendingMethod, 100)
+            
+  sendExisting: =>
+    sendExistingMethod = @sendExisting
+    if (window.navigator.onLine)
+      existingTodos = $.parseJSON localStorage["existingTodos"]
+      if (existingTodos.length > 0)
+        todo            = existingTodos[0]
+        update_todo_url = '/todos/'+todo._id
+        $.ajax
+          type: 'PUT',
+          url: update_todo_url
+          data: {todo: todo}
+          dataType: 'json',
+          success: ->
+            existingTodos.shift()
+            localStorage["existingTodos"] = JSON.stringify existingTodos
+            setTimeout(sendExistingMethod, 100)
             
   
         

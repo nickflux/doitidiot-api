@@ -10,7 +10,7 @@ class Todo
   field :complete,    :type => Boolean, :default => false
   field :deleted,     :type => Boolean, :default => false
 
-  attr_accessible :what_to_do, :anger_level, :ordinal, :complete
+  attr_accessible :what_to_do, :anger_level, :ordinal, :complete, :deleted
 
   validates_presence_of :what_to_do
   validates_length_of :what_to_do, :within => 1..100, :message => 'is too long'
