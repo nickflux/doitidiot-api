@@ -13,11 +13,10 @@ class Todo
     $('#todos').on("click", '.destroy_todo', @destroy)
     $('#todos').on("click", '.complete_todo', @complete)
     $('#todos').on("click", '.update_todo', @update)
-    # send all the new and updated Todos
-    if localStorage["pendingTodos"]
-      @sendPending()
-    if localStorage["existingTodos"]
-      @sendExisting()
+  
+  applyRedacts: =>    
+    # trigger applyBlacklists in Redacts
+    $('#todos').trigger("apply_blacklists")
   
   getTodoId: (element) =>
     element.closest('li').attr('id').replace(/todo_/, "")
@@ -44,6 +43,8 @@ class Todo
     if !localStorage["existingTodos"]
       localStorage["existingTodos"] = JSON.stringify([]);
     @existingTodos = $.parseJSON localStorage["existingTodos"]
+    # send these todos to the server
+    @sendExisting()
     
   addExistingTodo: (todo_id, todo) =>
     todo._id = todo_id
@@ -79,12 +80,16 @@ class Todo
     if !localStorage["pendingTodos"]
       localStorage["pendingTodos"] = JSON.stringify([]);
     @pendingTodos = $.parseJSON localStorage["pendingTodos"]
+    # send these todos to the server
+    @sendPending()
     
   addPendingTodo: (todo) =>
     todo_id     = new Date().getTime()
     todo['_id'] = "ls-" + todo_id
     @pendingTodos.push(todo)
     localStorage["pendingTodos"] = JSON.stringify(@pendingTodos)
+    # send this to the server as soon as possible
+    @sendPending()
     return todo
   
   updatePendingTodos: (todo_id, todo_updates) =>
@@ -117,8 +122,7 @@ class Todo
         self.todoInLi(todo)
       # enable sorting
       self.sort()
-      # trigger applyBlacklists in Redacts
-      $('#todos').trigger("todos_loaded")
+      self.applyRedacts()
       
   sort: =>
     self  = this
@@ -139,6 +143,7 @@ class Todo
   show: (todo) =>
     $('#new_todo input[type=text]').val("")
     this.todoInLi(todo)
+    @applyRedacts()
      
   create: =>
     todo  = {what_to_do: $('#new_todo input[type=text]').val()}
@@ -170,6 +175,7 @@ class Todo
       @updateExistingTodos(todo_id, todo_updates)
     $(list_item).html(Mustache.to_html($('#todo_template').html(), todo))
     $(list_item).data("what-to-do", what_to_do_value)
+    @applyRedacts()
     false
           
   destroy: (e) =>

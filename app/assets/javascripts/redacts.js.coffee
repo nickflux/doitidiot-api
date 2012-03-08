@@ -5,7 +5,7 @@ class Redact
   constructor: ->
     @getRedacts()
     $(document).on("ready", @applyRedacts)
-    $('#todos').bind("todos_loaded", @applyBlacklists)
+    $('#todos').bind("apply_blacklists", @applyBlacklists)
     
   getRedacts: =>
     if !localStorage["redacts"]
