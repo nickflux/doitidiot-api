@@ -121,7 +121,7 @@ class Todo
       $(all_todos).each (i, todo) ->
         self.todoInLi(todo)
       # enable sorting
-      self.sort()
+      # self.sort() - do we care?
       self.applyRedacts()
       
   sort: =>
