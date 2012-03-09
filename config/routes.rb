@@ -19,8 +19,8 @@ DoitidiotApi::Application.routes.draw do
     end
   end
   resources :enquiries, :only => [:new, :create]
-  
-  #match 'releases/:id/preview' => 'releases#preview', :as => :preview_release
+  match 'terms_and_conditions' => 'home#terms_and_conditions', :as => :terms_and_conditions
+  match 'faqs' => 'home#faqs', :as => :faqs
   
   root :to => "home#home"
   

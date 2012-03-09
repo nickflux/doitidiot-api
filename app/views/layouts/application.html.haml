@@ -13,17 +13,28 @@
     .navbar
       .navbar-inner
         .container
+          = link_to(image_tag("main_logo.gif"), root_path, :class => "brand")
           %ul.nav
             - if user_signed_in?
-              %li= link_to('completed todos', completed_todos_path)
               %li= link_to('log out', destroy_user_session_path, :method => "delete")
-            - else
-              %li= link_to('log in', new_user_session_path)
-              %li= link_to('register', new_user_registration_path)
-  
+              %li= link_to('my info', idiot_path)
+            %li= link_to('FAQs', faqs_path)
   
     .container
       .row-fluid
         .span12
-          = notice
+          - if notice
+            .alert.alert-success
+              %a.close{:"data-dismiss" => "alert"} ×
+              = notice
           = yield
+          
+    #footer.container
+      .row-fluid
+        %ul#footer_nav.span10
+          %li
+            = link_to("Contact Us", "mailto:mail@doitidiot.com")
+          %li
+            = link_to("Terms & Conditions", terms_and_conditions_path)
+        #copyright.span2
+          &copy; DoItIdiot Ltd 2012

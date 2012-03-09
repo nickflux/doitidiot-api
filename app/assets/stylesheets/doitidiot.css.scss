@@ -1,5 +1,26 @@
+body {
+  background-color: #333;
+  color: #FFF;
+}
+h1, h2 {
+  color: #FFF;
+}
+h1 {
+  margin-top: 0px;
+  &.idiot_name {
+    margin-bottom: 10px;
+  }
+  
+}
+h2 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
 input {
   width: 100%;
+}
+input[type="checkbox"] {
+  width: auto;
 }
 .hide {
   display: none;
@@ -8,11 +29,126 @@ form {
   margin: 0;
   padding: 0;
 }
+#new_todo {
+  .btn-primary {
+    width: 100%;
+  }
+}
 .list_todos {
   margin: 0;
   li {
     clear: right;
     list-style: none;
     margin: 5px;
+    padding: 6px;
+    font-size: 1.4em;
+    border: 1px solid #999;
+    &.anger_level1 {
+      background-color: rgb(155,155,155);
+      line-height: 1.5em;
+    }
+    &.anger_level2 {
+      background-color: rgb(80,80,80);
+      font-size: 1.4em;
+      line-height: 1.3em;
+    }
+    &.anger_level3 {
+      background-color: rgb(0,0,0);
+      font-size: 2.4em;
+      font-weight: bold;
+      line-height: 1.1em;
+      border-width: 2px;
+      padding: 6px 5px;
+      border-color: #BBB;
+    }
+    &.anger_level4 {
+      background-color: rgb(99,0,12);
+      font-size: 3.6em;
+      font-weight: bold;
+      line-height: 0.9em;
+      border-width: 2px;
+      padding: 6px 5px;
+      border-color: #BBB;
+    }
+    &.anger_level5 {
+      background-color: rgb(157,0,18);
+      font-size: 5em;
+      font-weight: bold;
+      line-height: 0.7em;
+      border-width: 3px;
+      padding: 6px 4px;
+      border-color: #FFF;
+    }
+    &.anger_level6 {
+      background-color: rgb(210,0,25);
+      font-size: 6.2em;
+      font-weight: bold;
+      line-height: 0.5em;
+      border-width: 3px;
+      padding: 6px 4px;
+      border-color: #FFF;
+    }
+    
+    .btn-group {
+      button {
+        width: 33%;
+      }
+    }
+    .update_todo.btn {
+      width: 100%;
+    }
   }
+}
+
+#faqs {
+  h3 {
+    color: red;
+    font-size: 1.6em;
+  }
+  a {
+    text-decoration: underline;
+  }
+  .center {
+    text-align: center;
+  }
+  img {
+    margin: 10px;
+    margin: 0 auto;
+  }
+}
+
+#devise {
+
+  h2 {
+    font-size: 3em;
+    margin-bottom: 10px;
+  }
+  .alert h2 {
+    font-size: 1.5em;
+    color: inherited;
+  }
+  label {
+    color: #F00;
+    font-size: 1.5em;
+  }
+}
+
+#footer {
+  color: #FFF;
+  padding: 20px 0px;
+}
+#footer a {
+  color: red;
+  font-size: 1.2em;
+}
+#footer ul {
+  list-style-type: none;
+}
+#footer li {
+  float: left;
+  padding: 5px;
+  padding-right: 20px;
+}
+#copyright {
+  float: right;
 }

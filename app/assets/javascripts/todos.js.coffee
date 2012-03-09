@@ -84,8 +84,9 @@ class Todo
     @sendPending()
     
   addPendingTodo: (todo) =>
-    todo_id     = new Date().getTime()
-    todo['_id'] = "ls-" + todo_id
+    todo_id             = new Date().getTime()
+    todo['_id']         = "ls-" + todo_id
+    todo['anger_level'] = 1
     @pendingTodos.push(todo)
     localStorage["pendingTodos"] = JSON.stringify(@pendingTodos)
     # send this to the server as soon as possible
@@ -102,7 +103,7 @@ class Todo
     return todo
   
   todoInLi: (todo) =>
-    $('#todos').append('<li id="todo_'+todo._id+'" class="row-fluid" data-what-to-do="'+todo.what_to_do+'">' + Mustache.to_html($('#todo_template').html(), todo) + '</li>')
+    $('#todos').append('<li id="todo_'+todo._id+'" class="row-fluid anger_level'+todo.anger_level+'" data-what-to-do="'+todo.what_to_do+'">' + Mustache.to_html($('#todo_template').html(), todo) + '</li>')
   
   index: =>
     self  = this
@@ -142,7 +143,7 @@ class Todo
   
   show: (todo) =>
     $('#new_todo input[type=text]').val("")
-    this.todoInLi(todo)
+    @todoInLi(todo)
     @applyRedacts()
      
   create: =>

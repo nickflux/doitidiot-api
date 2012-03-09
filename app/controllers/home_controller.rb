@@ -1,9 +1,16 @@
 class HomeController < ApplicationController
   respond_to :html, :json
   
-  before_filter :authenticate_user!, :get_new_todo
+  before_filter :authenticate_user!, :only => [:home]
+  before_filter :get_new_todo
   
   def home
+  end
+  
+  def terms_and_conditions
+  end
+  
+  def faqs
   end
   
   protected
