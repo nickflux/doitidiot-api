@@ -2,6 +2,9 @@ DoitidiotApi::Application.routes.draw do
   offline = Rack::Offline.configure do
     cache "assets/application.css"
     cache "assets/application.js"
+    cache "assets/main_logo.gif"
+    cache "assets/boggle.png"
+    cache ""
     
     network "/"
   end
