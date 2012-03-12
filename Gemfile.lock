@@ -62,6 +62,7 @@ GEM
     commonjs (0.2.0)
       therubyracer (~> 0.9.9)
     daemons (1.1.4)
+    dalli (1.1.5)
     database_cleaner (0.7.0)
     devise (1.5.2)
       bcrypt-ruby (~> 3.0)
@@ -279,6 +280,7 @@ DEPENDENCIES
   bson_ext (~> 1.4)
   capybara
   coffee-rails (~> 3.1.1)
+  dalli
   database_cleaner
   devise
   email_spec
