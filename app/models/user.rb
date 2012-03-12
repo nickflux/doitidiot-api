@@ -11,8 +11,8 @@ class User
   field :email_suffix,  :type => String
   field :coordinates,   :type => Array
   field :address,       :type => String
-  field :time_zone,     :type => String
-  field :time_to_send,  :type => String
+  field :time_zone,     :type => String, :default => "London"
+  field :time_to_send,  :type => String, :default => "morning"
 
   has_many :todos, :dependent => :destroy
 
