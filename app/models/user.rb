@@ -29,5 +29,9 @@ class User
   def generate_disposable_email_suffix
     self.email_suffix  = (0...8).map{65.+(rand(25)).chr}.join
   end
+  
+  def time_to_send_to_i
+    TIMES_TO_SEND[time_to_send]
+  end
 
 end

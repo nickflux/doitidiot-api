@@ -15,7 +15,6 @@ gem 'has_scope' # Aides search queries
 gem 'inherited_resources' # For minimal controllers
 gem 'geocoder' # for IP/location based functions
 
-gem 'therubyracer' # JavaScript runtime
 gem 'mustache' # logic-less templates for Ruby and JavaScript
 
 gem 'log_buddy' # for improved logging
@@ -33,7 +32,7 @@ gem 'jquery-rails'
 
 group :test, :development do
   gem 'rspec-core', :git => "git://github.com/rspec/rspec-core.git"
-  gem 'rspec-rails', '2.8.1'
+  gem 'rspec-rails'
   gem 'email_spec'
   gem 'rspec-rails-mocha', '~> 0.3.1', :require => false
   gem 'factory_girl_rails'

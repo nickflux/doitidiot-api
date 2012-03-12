@@ -1,0 +1,37 @@
+%html
+  %body{:leftmargin => "20", :marginwidth => "0", :topmargin => "0", :marginheight => "0", :offset => "0", :style => "font-family: courier, monospace;margin: 10px;"}
+    - if @todos.empty?
+      %h2{:style => "color: red;font-size: 1.5em;"}
+        = swear_generator("Hey #diswnoun#! Have you really got nothing to do?")
+      - if @mail_message
+        = textilize(@mail_message.message).html_safe
+    - else
+      %h2{:style => "color: red;font-size: 1.5em;"}
+        = swear_generator("Hey, #diswnoun#! Get #{if @todos.size == 1 then "this" else "these" end} done.")
+      - if @mail_message
+        = textilize(@mail_message.message).html_safe
+      
+      %ul#todo_sort{:style => "list-style-type: none;margin: 0;padding: 0;"}
+        - @todos.each do |todo|
+          - case todo.anger_level
+          - when 1
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(155,155,155);line-height: 1.5em;"}
+              = redactor(todo.what_to_do)
+          - when 2
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(80,80,80);font-size: 1.4em;line-height: 1.3em;"}
+              = redactor(todo.what_to_do)
+          - when 3
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(0,0,0);font-size: 2.4em;font-weight: bold;line-height: 1.1em;border-width: 2px;padding-right: 5px;padding-left: 5px;"}
+              = redactor(todo.what_to_do)
+          - when 4
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(99,0,12);font-size: 3.6em;font-weight: bold;line-height: 0.9em;border-width: 2px;padding-right: 5px;padding-left: 5px;"}
+              = redactor(todo.what_to_do)
+          - when 5
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(157,0,18);font-size: 5em;font-weight: bold;line-height: 0.7em;border-width: 3px;padding-right: 4px;padding-left: 4px;"}
+              = redactor(todo.what_to_do)
+          - when 6
+            %li{:class => "anger_level#{todo.anger_level}", :style => "margin: 10px 0px; padding: 6px;font-size: 1.4em;border: 1px solid #000;color: #FFF;width: 410px;clear: both;background-color: rgb(210,0,25);font-size: 6.2em;font-weight: bold;line-height: 0.5em;border-width: 3px;padding-right: 4px;padding-left: 4px;"}
+              = redactor(todo.what_to_do)
+    %h3
+      your daily email from 
+      = link_to("doitidiot.com", "http://doitidiot.com", :style => "color: red;")

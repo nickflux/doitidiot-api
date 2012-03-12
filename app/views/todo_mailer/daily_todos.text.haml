@@ -1,0 +1,8 @@
+- if @todos.empty?
+  = swear_generator("Hey #diswnoun#! Have you really got nothing to do?")
+- else
+  = swear_generator("Hey, #diswnoun#! Get #{if @todos.size == 1 then "this" else "these" end} done.")
+  - @todos.each do |todo|
+    = redactor(todo.what_to_do)
+
+your daily email from http://doitidiot.com

@@ -6,3 +6,6 @@
     %label send reminder at
     = f.select :time_to_send, User::TIMES_TO_SEND.keys, {}, {:class => "span12"}
     = f.submit "update me!", :class => "btn-primary btn-large"
+    
+#cancel_account.row-fluid
+  = link_to('Close Your Account', user_registration_path, :confirm => 'You sure? Everything gets deleted, no more encouraging emails to greet you every morning.', :method => 'delete', :class => 'btn-success btn-large')

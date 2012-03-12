@@ -30,6 +30,23 @@ form {
   margin: 0;
   padding: 0;
 }
+
+#intro {
+  padding-bottom: 15px;
+  font-size: 1.2em;
+  h1 {
+    font-size: 3.5em;
+    line-height: 1.5em;
+  }
+  p {
+    font-size: 1.2em;    
+    a {
+      font-size: 2em;
+      line-height: 2em;
+    }
+  }
+}
+
 #new_todo {
   .btn-primary {
     width: 100%;
@@ -127,9 +144,13 @@ form {
     color: inherited;
   }
   label {
-    color: #F00;
+    color: #FFF;
     font-size: 1.5em;
   }
+}
+
+#cancel_account {
+  margin-top: 15px;
 }
 
 #footer {
