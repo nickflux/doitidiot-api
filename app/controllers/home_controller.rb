@@ -5,6 +5,7 @@ class HomeController < ApplicationController
   before_filter :get_new_todo
   
   def home
+    redirect_to todos_path if user_signed_in?
   end
   
   def terms_and_conditions

@@ -1,9 +1,11 @@
 !!! 5
-%html{:manifest => "/application.manifest"}
+%html{:manifest => if request.path == todos_path then "/application.manifest" else "" end }
   %head
     %title Do It Idiot
-    = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "application"
+    =# stylesheet_link_tag "application", :media => "all"
+    %link{:href => "/assets/application.css", :media => "all", :rel => "stylesheet", :type => "text/css"}
+    =# javascript_include_tag "application"
+    %script{:src => "/assets/application.js", :type => "text/javascript"}
     = csrf_meta_tags
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0" }
     %link{"rel" => "shortcut icon", "href" => "/assets/favicon.ico"}
@@ -14,11 +16,16 @@
       .navbar-inner
         .container
           = link_to(image_tag("main_logo.gif"), root_path, :class => "brand")
-          %ul.nav
-            - if user_signed_in?
-              %li= link_to('log out', destroy_user_session_path, :method => "delete")
-              %li= link_to('my info', idiot_path)
-            %li= link_to('FAQs', faqs_path)
+          %a.btn.btn-navbar{:"data-toggle" => "collapse", :"data-target" => ".nav-collapse"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          .nav-collapse
+            %ul.nav
+              - if user_signed_in?
+                %li= link_to('log out', destroy_user_session_path, :method => "delete")
+                %li= link_to('my info', idiot_path)
+              %li= link_to('FAQs', faqs_path)
   
     .container
       .row-fluid

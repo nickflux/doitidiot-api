@@ -4,9 +4,11 @@ DoitidiotApi::Application.routes.draw do
     cache "assets/application.js"
     cache "assets/main_logo.gif"
     cache "assets/boggle.png"
-    cache ""
+    cache "todos"
+    cache "todos.json"
+    cache "redacts.json"
     
-    network "/"
+    network "*"
   end
   match "/application.manifest" => offline
   
