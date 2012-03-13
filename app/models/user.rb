@@ -14,7 +14,7 @@ class User
   field :time_zone,     :type => String, :default => "London"
   field :time_to_send,  :type => String, :default => "morning"
   field :provider,      :type => String
-  field :provider_name  :type => String
+  field :provider_name, :type => String
   field :uid,           :type => String
   field :token,         :type => String
   field :secret,        :type => String
