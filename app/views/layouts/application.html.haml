@@ -12,6 +12,7 @@
     %link{"rel" => "apple-touch-icon", "href" => "/assets/apple-touch-icon.png"}
     
   %body
+    = render "shared/facebook_sdk"
     .navbar
       .navbar-inner
         .container
@@ -20,12 +21,14 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          .nav-collapse
+          .nav-collapse.pull-right
             %ul.nav
               - if user_signed_in?
                 %li= link_to('log out', destroy_user_session_path, :method => "delete")
                 %li= link_to('my info', idiot_path)
               %li= link_to('FAQs', faqs_path)
+              %li= render "shared/tweet_this"
+              %li= render "shared/facebook_like"
   
     .container
       .row-fluid
@@ -39,9 +42,9 @@
     #footer.container
       .row-fluid
         %ul#footer_nav.span10
-          %li
-            = link_to("Contact Us", "mailto:mail@doitidiot.com")
-          %li
-            = link_to("Terms & Conditions", terms_and_conditions_path)
+          %li= link_to("Contact Us", "mailto:mail@doitidiot.com")
+          %li= link_to("Terms & Conditions", terms_and_conditions_path)
+          %li= render "shared/tweet_this"
+          %li= render "shared/facebook_like"
         #copyright.span2
           &copy; DoItIdiot Ltd 2012
