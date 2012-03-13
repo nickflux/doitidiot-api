@@ -19,7 +19,7 @@ class Redact
   
   def redact_array_with_swears
     if swear_redact = ::Redact.where(:sweary => true, :code_name => "#{code_name}-swear").first
-      (redact_array + swear_redact.redact_array).shuffle
+      swear_redact.redact_array.shuffle
     else
       redact_array.shuffle
     end
