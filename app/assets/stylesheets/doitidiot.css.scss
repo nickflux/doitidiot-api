@@ -144,6 +144,12 @@ form {
   h2 {
     font-size: 3em;
     margin-bottom: 10px;
+    span {
+      font-size: 0.5em;
+      img {
+        margin-bottom: -4px;
+      }
+    }
   }
   .alert h2 {
     font-size: 1.5em;

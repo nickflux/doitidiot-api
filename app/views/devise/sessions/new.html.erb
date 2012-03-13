@@ -13,10 +13,8 @@
 
 
 <div id="devise" class="row-fluid">
-  <h2>Sign in</h2>
-  
-  <%= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter) %>
-  
+  <h2>Sign in <span>(or sign in with <%= link_to(image_tag("logo_twitter_withbird_1000_white_blue.png"), user_omniauth_authorize_path(:twitter)) %>)</span></h2>
+    
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
     <%= f.label :email %>
     <%= f.email_field :email, :class => "span12" %>
