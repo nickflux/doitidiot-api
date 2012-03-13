@@ -5,5 +5,6 @@ Twitter.configure do |config|
   config.oauth_token_secret = 'Rfvowft85mhKWdET675AiIhzaPQofp2GIbwd2fyNLg'
 end
 if Rails.env.production?
-  Twitter.gateway = ENV['APIGEE_TWITTER_API_ENDPOINT']
+  # how much do I really need this? I mean come on!
+  #Twitter.gateway = ENV['APIGEE_TWITTER_API_ENDPOINT']
 end
