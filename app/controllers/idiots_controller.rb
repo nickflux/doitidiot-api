@@ -6,11 +6,12 @@ class IdiotsController < ApplicationController
   def show
     # handle GoCardless response
     if params[:resource_uri]
+      @user = current_user
       begin
         GoCardless.confirm_resource(params)
-        user.update_attributes(:gocardless => params)
+        @user.update_attributes(:gocardless => params)
       rescue => exception
-        user.update_attributes(:gocardless => [exception.message])
+        @user.update_attributes(:gocardless => [exception.message])
       end
     end
     
