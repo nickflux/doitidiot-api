@@ -8,6 +8,11 @@
     = f.time_zone_select :time_zone, ActiveSupport::TimeZone.all, {}, {:class => "span12"}
     %label send reminder at
     = f.select :time_to_send, User::TIMES_TO_SEND.keys, {}, {:class => "span12"}
+    - if @idiot.paying
+      %label.checkbox
+        #{f.check_box :sweary}
+        %a{:href => "#", :rel => "tooltip", :title => "some of them are quite unpleasant"} sweary version
+    %br
     = f.submit "update me!", :class => "btn-primary btn-large"
     
 #cancel_account.row-fluid

@@ -29,3 +29,14 @@
   font-size: 1.5em;
   color: @errorText;
 }
+
+// TOOLTIP
+// ------=
+
+.tooltip {
+  .opacity(0);
+  &.in     { .opacity(95); }
+}
+.tooltip-inner {
+  background-color: @blue;
+}
