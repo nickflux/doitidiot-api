@@ -67,4 +67,14 @@ namespace :doitidiot do
     end
   end
   
+  # run every day - tweet a daily insult
+  desc "Send out daily insult on twitter"
+  task :daily_insult => :environment do
+
+    insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
+    twitter_client  = Twitter::Client.new
+    twitter_client.update("Your daily insult from doitidiot.com: #{insult}")
+
+  end
+  
 end

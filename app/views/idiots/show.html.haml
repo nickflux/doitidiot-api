@@ -1,6 +1,6 @@
 #devise.row-fluid
   = form_for @idiot, :as => :idiot, :url => idiot_path, :method => :put do |f|
-    - if user.provider == 'twitter'
+    - if @idiot.provider == 'twitter'
       %label twitter id: #{@idiot.provider_name}
     - else
       %label email: #{@idiot.email}
