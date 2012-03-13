@@ -180,6 +180,9 @@ form {
   float: left;
   padding: 5px;
   padding-right: 20px;
+  &.twitter_follow iframe {
+    margin-top: -5px;
+  }
 }
 #copyright {
   float: right;
