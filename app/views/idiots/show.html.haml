@@ -16,7 +16,7 @@
     %br
     = f.submit "update me!", :class => "btn-primary btn-large"
 
-- if @idiot.paying
+- if false#@idiot.paying
   #paying.row_fluid
     = link_to("upgrade to Bastard Level", GoCardless.new_bill_url(:amount => "5.00", :name => "Swearing Upgrade"), :class => "btn-large btn-danger")
     
