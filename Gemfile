@@ -17,6 +17,7 @@ gem 'has_scope' # Aides search queries
 gem 'inherited_resources' # For minimal controllers
 gem 'geocoder' # for IP/location based functions
 gem 'dalli'
+gem 'gocardless' # payment gateway
 
 gem 'mustache' # logic-less templates for Ruby and JavaScript
 gem 'rabl' # gem for JSON templates
