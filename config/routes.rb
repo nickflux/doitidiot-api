@@ -12,7 +12,7 @@ DoitidiotApi::Application.routes.draw do
   end
   match "/application.manifest" => offline
   
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   
   resource  :idiot, :only => [:show, :edit, :update]
   resources :redacts, :only => [:index]
