@@ -54,7 +54,11 @@ namespace :doitidiot do
       if Time.zone.now.hour == user.time_to_send_to_i
         if user.provider == 'twitter' && user.todos.alive.count > 0
           # tweet for this user of they have any todos left
-          insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
+          if user.sweary
+            insult        = Redact.where(:code_name => 'diswnouns').first.redact_array_with_swears.first
+          else
+            insult        = Redact.where(:code_name => 'diswnouns').first.redact_array.first
+          end
           twitter_client  = Twitter::Client.new(:oauth_token => user.token, :oauth_token_secret => user.secret)
           twitter_client.update("Still got stuff to do at http://doitidiot.com. I'm a total #{insult}")
         else

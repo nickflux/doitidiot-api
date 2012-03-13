@@ -13,6 +13,8 @@ class User
   field :address,       :type => String
   field :time_zone,     :type => String, :default => "London"
   field :time_to_send,  :type => String, :default => "morning"
+  field :sweary,        :type => Boolean, :default => false
+  
   field :provider,      :type => String # if this is empty then the user signed up with email only
   field :provider_name, :type => String
   field :uid,           :type => String

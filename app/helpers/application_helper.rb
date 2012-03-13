@@ -5,7 +5,11 @@ module ApplicationHelper
     return if text.blank?
     # swear nouns
     @diswnouns  = Rails.cache.fetch("diswnouns") do
-      Redact.where(:code_name => 'diswnouns').first.redact_array 
+      if user_signed_in? && current_user.sweary
+        Redact.where(:code_name => 'diswnouns').first.redact_array_with_swears
+      else
+        Redact.where(:code_name => 'diswnouns').first.redact_array
+      end
     end
     text.gsub!('#diswnoun#', @diswnouns.sample)
 

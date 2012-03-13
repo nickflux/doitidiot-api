@@ -19,6 +19,7 @@ gem 'geocoder' # for IP/location based functions
 gem 'dalli'
 
 gem 'mustache' # logic-less templates for Ruby and JavaScript
+gem 'rabl' # gem for JSON templates
 
 gem 'log_buddy' # for improved logging
 

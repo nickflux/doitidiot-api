@@ -8,11 +8,17 @@ class TodoMailer < ActionMailer::Base
     @user   = user
     @todos  = user.todos.alive.asc(:ordinal)
     @mail_message = MailMessage.where(:date_to_send => Date.today).first
-    mail(:to => @user.email, :subject => "Why haven't you done this yet? Do it, #{insult}.")
+    mail(:to => @user.email, :subject => "Why haven't you done this yet? Do it, #{insult(user)}.")
   end
   
-  def insult
-    @insult ||= Redact.where(:code_name => 'diswnouns').first.redact_array.first
+  def insult(user)
+    @insult ||= begin
+      if user.sweary
+        Redact.where(:code_name => 'diswnouns').first.redact_array_with_swears.first
+      else
+        Redact.where(:code_name => 'diswnouns').first.redact_array.first
+      end
+    end
   end
 
 end
