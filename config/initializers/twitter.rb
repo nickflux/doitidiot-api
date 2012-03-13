@@ -4,6 +4,6 @@ Twitter.configure do |config|
   config.oauth_token        = '256911906-61peXQ6JEj2Wac0QC74rfUTBztPBBISHUJUGAWSe'
   config.oauth_token_secret = 'Rfvowft85mhKWdET675AiIhzaPQofp2GIbwd2fyNLg'
 end
-if Rails.production?
+if Rails.env.production?
   Twitter.gateway = ENV['APIGEE_TWITTER_API_ENDPOINT']
 end
