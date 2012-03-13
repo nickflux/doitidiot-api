@@ -14,6 +14,7 @@ class User
   field :time_zone,     :type => String, :default => "London"
   field :time_to_send,  :type => String, :default => "morning"
   field :provider,      :type => String
+  field :provider_name  :type => String
   field :uid,           :type => String
   field :token,         :type => String
   field :secret,        :type => String
@@ -31,11 +32,21 @@ class User
   ###
   
   def self.find_for_twitter_oauth(access_token, signed_in_resource = nil)
-    data = access_token.extra.raw_info
-    if user = User.where(:email => data.email).first
+    uid           = access_token.uid
+    provider      = "twitter"
+    provider_name = access_token.info.name
+    if user = User.where(:uid => uid, :provider => provider).first
       user
-    else # Create a user with a stub password. 
-      User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
+    else # Create a user with a stub password.
+      User.create!(
+        :provider       => provider,
+        :provider_name  => provider_name,
+        :uid            => uid,
+        :token          => access_token.credentials.token,
+        :secret         => access_token.credentials.secret,
+        :email          => "#{provider_name}@faketwitteremail.com", # to pass validations
+        :password       => Devise.friendly_token[0,20] # to pass validations
+      ) 
     end
   end
   

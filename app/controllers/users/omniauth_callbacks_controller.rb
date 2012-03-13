@@ -1,7 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   
   def twitter
-    # You need to implement the method below in your model
     @user = User.find_for_twitter_oauth(request.env["omniauth.auth"], current_user)
     
     if @user.persisted?
@@ -11,6 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session["devise.twitter_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end
+    
   end
   
 end
