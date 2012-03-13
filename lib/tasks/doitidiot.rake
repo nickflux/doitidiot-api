@@ -52,8 +52,15 @@ namespace :doitidiot do
     User.all.each do |user|
       Time.zone = user.time_zone
       if Time.zone.now.hour == user.time_to_send_to_i
-        puts "Mailing #{user.email}"
-        TodoMailer.daily_todos(user).deliver
+        if user.provider == 'twitter' && user.todos.alive.count > 0
+          # tweet for this user of they have any todos left
+          insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
+          twitter_client  = Twitter::Client.new(:oauth_token => user.token, :oauth_token_secret => user.secret)
+          twitter_client.update("Still got stuff to do at http://doitidiot.com. I'm a total #{insult}")
+        else
+          puts "Mailing #{user.email}"
+          TodoMailer.daily_todos(user).deliver
+        end
       else
         #puts "Try again next hour for #{user.email}"
       end

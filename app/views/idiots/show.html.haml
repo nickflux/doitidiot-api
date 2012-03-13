@@ -1,6 +1,9 @@
 #devise.row-fluid
   = form_for @idiot, :as => :idiot, :url => idiot_path, :method => :put do |f|
-    %label email: #{@idiot.email}
+    - if user.provider == 'twitter'
+      %label twitter id: #{@idiot.provider_name}
+    - else
+      %label email: #{@idiot.email}
     %label time zone
     = f.time_zone_select :time_zone, ActiveSupport::TimeZone.all, {}, {:class => "span12"}
     %label send reminder at

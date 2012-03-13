@@ -13,7 +13,7 @@ class User
   field :address,       :type => String
   field :time_zone,     :type => String, :default => "London"
   field :time_to_send,  :type => String, :default => "morning"
-  field :provider,      :type => String
+  field :provider,      :type => String # if this is empty then the user signed up with email only
   field :provider_name, :type => String
   field :uid,           :type => String
   field :token,         :type => String
@@ -31,10 +31,10 @@ class User
   # CLASS METHODS
   ###
   
-  def self.find_for_twitter_oauth(access_token, signed_in_resource = nil)
-    uid           = access_token.uid
+  def self.find_for_twitter_oauth(omniauth, signed_in_resource = nil)
+    uid           = omniauth.uid
     provider      = "twitter"
-    provider_name = access_token.info.name
+    provider_name = omniauth.info.name
     if user = User.where(:uid => uid, :provider => provider).first
       user
     else # Create a user with a stub password.
@@ -42,8 +42,8 @@ class User
         :provider       => provider,
         :provider_name  => provider_name,
         :uid            => uid,
-        :token          => access_token.credentials.token,
-        :secret         => access_token.credentials.secret,
+        :token          => omniauth.credentials.token,
+        :secret         => omniauth.credentials.secret,
         :email          => "#{provider_name}@faketwitteremail.com", # to pass validations
         :password       => Devise.friendly_token[0,20] # to pass validations
       ) 
@@ -68,6 +68,14 @@ class User
   
   def time_to_send_to_i
     TIMES_TO_SEND[time_to_send]
+  end
+  
+  def user_identifier
+    if provider == 'twitter'
+      "@#{provider_name}"
+    else
+      email
+    end
   end
   
   def hash_from_omniauth(omniauth)
