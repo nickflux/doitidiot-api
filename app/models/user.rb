@@ -13,6 +13,10 @@ class User
   field :address,       :type => String
   field :time_zone,     :type => String, :default => "London"
   field :time_to_send,  :type => String, :default => "morning"
+  field :provider,      :type => String
+  field :uid,           :type => String
+  field :token,         :type => String
+  field :secret,        :type => String
 
   has_many :todos, :dependent => :destroy
 
@@ -53,6 +57,15 @@ class User
   
   def time_to_send_to_i
     TIMES_TO_SEND[time_to_send]
+  end
+  
+  def hash_from_omniauth(omniauth)
+    {
+      :provider => omniauth['provider'], 
+      :uid => omniauth['uid'], 
+      :token => (omniauth['credentials']['token'] rescue nil),
+      :secret => (omniauth['credentials']['secret'] rescue nil)
+    }
   end
 
 end
