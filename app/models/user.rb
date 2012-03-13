@@ -6,7 +6,7 @@ class User
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :database_authenticatable, :registerable,  :recoverable, :rememberable, :trackable, :validatable, :trackable
+  devise :database_authenticatable, :registerable,  :recoverable, :rememberable, :trackable, :validatable, :trackable, :omniauthable
 
   field :email_suffix,  :type => String
   field :coordinates,   :type => Array
@@ -21,6 +21,27 @@ class User
   reverse_geocoded_by :coordinates
 
   after_validation :geocode
+
+  ###
+  # CLASS METHODS
+  ###
+  
+  def self.find_for_twitter_oauth(access_token, signed_in_resource = nil)
+    data = access_token.extra.raw_info
+    if user = User.where(:email => data.email).first
+      user
+    else # Create a user with a stub password. 
+      User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
+    end
+  end
+  
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.twitter_data"] && session["devise.twitter_data"]["extra"]["raw_info"]
+        user.email = data["email"]
+      end
+    end
+  end
 
   ###
   # INSTANCE METHODS

@@ -9,6 +9,8 @@ gem 'yajl-ruby' # for parsing JSON files
 gem 'rack-offline' # for offline mobile app
 
 gem 'devise' # authentication etc
+gem 'omniauth-twitter'
+gem 'twitter'
 gem 'RedCloth' # Textile
 gem 'haml' # templates
 gem 'has_scope' # Aides search queries
