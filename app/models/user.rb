@@ -42,7 +42,7 @@ class User
     if user = User.where(:uid => uid, :provider => provider).first
       user
     else # Create a user with a stub password.
-      User.create!(
+      user  = User.create!(
         :provider       => provider,
         :provider_name  => provider_name,
         :uid            => uid,
@@ -53,6 +53,7 @@ class User
       )
       # follow the user on Twitter
       Twitter.follow(provider_name)
+      return user
     end
   end
   
