@@ -15,13 +15,13 @@ class User
   field :time_to_send,  :type => String, :default => "morning"
   field :sweary,        :type => Boolean, :default => false
   field :paying,        :type => Boolean, :default => false
-  field :gocardless,    :type => Array
   
   field :provider,      :type => String # if this is empty then the user signed up with email only
   field :provider_name, :type => String
   field :uid,           :type => String
   field :token,         :type => String
   field :secret,        :type => String
+  field :tweet_to,      :type => String
 
   has_many :todos, :dependent => :destroy
 
@@ -39,7 +39,7 @@ class User
   def self.find_for_twitter_oauth(omniauth, signed_in_resource = nil)
     uid           = omniauth.uid
     provider      = "twitter"
-    provider_name = omniauth.info.name
+    provider_name = omniauth.info.nickname
     if user = User.where(:uid => uid, :provider => provider).first
       user
     else # Create a user with a stub password.
