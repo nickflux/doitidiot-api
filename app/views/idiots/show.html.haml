@@ -4,6 +4,9 @@
       %label twitter id: #{@idiot.provider_name}
     - else
       %label email: #{@idiot.email}
+    - if @idiot.provider == 'twitter'
+      %label tweet to this twitter id if you're late on a todo (include @):
+      = f.text_field :tweet_to, {:class => "span12"}
     %label time zone
     = f.time_zone_select :time_zone, ActiveSupport::TimeZone.all, {}, {:class => "span12"}
     %label send reminder at

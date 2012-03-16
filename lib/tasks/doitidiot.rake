@@ -54,13 +54,15 @@ namespace :doitidiot do
       if Time.zone.now.hour == user.time_to_send_to_i
         if user.provider == 'twitter' && user.todos.alive.count > 0
           # tweet for this user of they have any todos left
-          if user.sweary
-            insult        = Redact.where(:code_name => 'diswnouns').first.redact_array_with_swears.first
-          else
-            insult        = Redact.where(:code_name => 'diswnouns').first.redact_array.first
-          end
+         
           twitter_client  = Twitter::Client.new(:oauth_token => user.token, :oauth_token_secret => user.secret)
-          twitter_client.update("Still got stuff to do at http://doitidiot.com. I'm a total #{insult}")
+          # check if any todos are over 1 week late
+          if user.todos.alive.where(:anger_level.gt => 1).count > 0 && !user.tweet_to.blank?
+            twitter_client.update("Hey #{user.tweet_to}! I've still got stuff to do at http://doitidiot.com. I'm a total #{insult(user)}")
+          else
+            twitter_client.update("Still got stuff to do at http://doitidiot.com. I'm a total #{insult(user)}")
+          end
+            
         else
           puts "Mailing #{user.email}"
           TodoMailer.daily_todos(user).deliver
@@ -75,15 +77,11 @@ namespace :doitidiot do
   # select user for tweeted insult
   desc "Send out daily insult on twitter"
   task :daily_insult => :environment do
-    twitter_client  = Twitter::Client.new
-    insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
-    twitter_client.update("Your daily insult from doitidiot.com: #{insult}")
-    
+    Twitter.update("Your daily insult from doitidiot.com: #{insult}")
     # select user
-    user            = User.where(provider: 'twitter').all.select{|u| u.todos.alive.count > 0 }.shuffle.first
+    user  = User.where(provider: 'twitter').all.select{|u| u.todos.alive.count > 0 }.shuffle.first
     if user
-      insult        = Redact.where(:code_name => 'diswnouns').first.redact_array.first
-      twitter_client.update("@#{user.provider_name} still has stuff to do on http://doitidiot.com. What a total #{insult}!")
+      Twitter.update("@#{user.provider_name} still has stuff to do on http://doitidiot.com. What a total #{insult}!")
     end
   end
   
@@ -97,6 +95,14 @@ namespace :doitidiot do
         user.todos.create!(what_to_do: direct_message.text)
         Twitter.direct_message_destroy(direct_message.id)
       end
+    end
+  end
+  
+  def insult(user = nil)
+     if user && user.sweary
+      Redact.where(:code_name => 'diswnouns').first.redact_array_with_swears.first
+    else
+      Redact.where(:code_name => 'diswnouns').first.redact_array.first
     end
   end
   
