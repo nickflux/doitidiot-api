@@ -4,16 +4,14 @@
     <div>
       Do It Idiot is a to do list manager that sends daily emails with gentle words of encouragement, like 
       'Come on you <%= swear_generator('#diswadj# #diswnoun#') %>, get it done!'
-      <p><%= link_to("Sign Up", new_user_registration_path) %></p>
-      or...
-    
+      <h2><%= link_to(("sign in with " + image_tag("logo_twitter_withbird_1000_white_blue.png")).html_safe, user_omniauth_authorize_path(:twitter), :class => "btn btn-primary") %></h2>
     </div>
   </div>
 </div>
 
 
 <div id="devise" class="row-fluid">
-  <h2>Sign in <span>(or sign in with <%= link_to(image_tag("logo_twitter_withbird_1000_white_blue.png"), user_omniauth_authorize_path(:twitter)) %>)</span></h2>
+  <h3>or sign in with email</h3>
     
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
     <%= f.label :email %>

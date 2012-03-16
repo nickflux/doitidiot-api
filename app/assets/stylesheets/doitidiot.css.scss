@@ -38,18 +38,27 @@ form {
 }
 
 #intro {
-  padding-bottom: 15px;
+  padding-bottom: 55px;
   font-size: 1.2em;
   h1 {
     font-size: 3.5em;
     line-height: 1.5em;
   }
-  p {
-    font-size: 1.2em;    
+  h2 {
+    margin-top: 10px;
+    font-size: 3em;
+    line-height: 1.5em;
     a {
-      font-size: 2em;
-      line-height: 2em;
+      font-size: 0.9em;
+      line-height: 1.5em;
     }
+    img {
+      width: 200px;
+      margin-bottom: -4px;
+    }
+  }
+  p {
+    font-size: 1.2em;
   }
 }
 
@@ -155,7 +164,7 @@ form {
     font-size: 1.5em;
     color: inherited;
   }
-  label {
+  h3, label {
     color: #FFF;
     font-size: 1.5em;
   }

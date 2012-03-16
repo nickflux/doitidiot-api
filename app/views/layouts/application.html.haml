@@ -25,7 +25,7 @@
             %ul.nav
               - if user_signed_in?
                 %li= link_to('log out', destroy_user_session_path, :method => "delete")
-                %li= link_to('my info', idiot_path)
+                %li= link_to('my account', idiot_path)
               %li= link_to('FAQs', faqs_path)
               %li= render "shared/tweet_this"
               %li= render "shared/facebook_like"
