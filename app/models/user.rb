@@ -50,7 +50,9 @@ class User
         :secret         => omniauth.credentials.secret,
         :email          => "#{provider_name}@faketwitteremail.com", # to pass validations
         :password       => Devise.friendly_token[0,20] # to pass validations
-      ) 
+      )
+      # follow the user on Twitter
+      Twitter.follow(provider_name)
     end
   end
   

@@ -72,13 +72,32 @@ namespace :doitidiot do
   end
   
   # run every day - tweet a daily insult
+  # select user for tweeted insult
   desc "Send out daily insult on twitter"
   task :daily_insult => :environment do
-
-    insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
     twitter_client  = Twitter::Client.new
+    insult          = Redact.where(:code_name => 'diswnouns').first.redact_array.first
     twitter_client.update("Your daily insult from doitidiot.com: #{insult}")
-
+    
+    # select user
+    user            = User.where(provider: 'twitter').all.select{|u| u.todos.alive.count > 0 }.shuffle.first
+    if user
+      insult        = Redact.where(:code_name => 'diswnouns').first.redact_array.first
+      twitter_client.update("@#{user.provider_name} still has stuff to do on http://doitidiot.com. What a total #{insult}!")
+    end
+  end
+  
+  # Check direct messages to add new tweets
+  desc "Check direct messages to add todos"
+  task :direct_message_todos => :environment do
+    Twitter.direct_messages.each do |direct_message|
+      # check for user
+      uid = direct_message.sender.id
+      if user = User.where(uid: uid).first
+        user.todos.create!(what_to_do: direct_message.text)
+        Twitter.direct_message_destroy(direct_message.id)
+      end
+    end
   end
   
 end

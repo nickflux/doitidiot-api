@@ -89,8 +89,6 @@ class Todo
     todo['anger_level'] = 1
     @pendingTodos.push(todo)
     localStorage["pendingTodos"] = JSON.stringify(@pendingTodos)
-    # send this to the server as soon as possible
-    @sendPending()
     return todo
   
   updatePendingTodos: (todo_id, todo_updates) =>
