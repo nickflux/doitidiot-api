@@ -26,6 +26,7 @@ class User
   has_many :todos, :dependent => :destroy
 
   before_create :generate_disposable_email_suffix
+  after_create  :add_first_todo
   geocoded_by :last_sign_in_ip
   reverse_geocoded_by :coordinates
 
@@ -68,7 +69,11 @@ class User
   ###
   # INSTANCE METHODS
   ###
-
+  
+  def add_first_todo
+    todos.create!(what_to_do: "Find something to do")
+  end
+  
   def generate_disposable_email_suffix
     self.email_suffix  = (0...8).map{65.+(rand(25)).chr}.join
   end
